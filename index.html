@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Country</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #flag-container { margin: 20px auto; }
+        img { width: 300px; height: 200px; border: 2px solid black; }
+        #result { font-weight: bold; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Guess the Country from its Flag</h1>
+    <div id="flag-container">
+        <img id="flag" src="" alt="Country Flag">
+    </div>
+    <input type="text" id="guess" placeholder="Enter country name">
+    <button onclick="checkGuess()">Submit</button>
+    <p id="result"></p>
+    <button onclick="nextFlag()">Next</button>
+    <button onclick="exitGame()">Exit</button>
+    
+    <script>
+        const countries = [
+            { name: "Argentina", flag: "https://flagcdn.com/w320/ar.png" },
+            { name: "Brazil", flag: "https://flagcdn.com/w320/br.png" },
+            { name: "Canada", flag: "https://flagcdn.com/w320/ca.png" },
+            { name: "China", flag: "https://flagcdn.com/w320/cn.png" },
+            { name: "France", flag: "https://flagcdn.com/w320/fr.png" },
+            { name: "Germany", flag: "https://flagcdn.com/w320/de.png" },
+            { name: "India", flag: "https://flagcdn.com/w320/in.png" },
+            { name: "Italy", flag: "https://flagcdn.com/w320/it.png" },
+            { name: "Japan", flag: "https://flagcdn.com/w320/jp.png" },
+            { name: "Mexico", flag: "https://flagcdn.com/w320/mx.png" },
+            { name: "Russia", flag: "https://flagcdn.com/w320/ru.png" },
+            { name: "South Korea", flag: "https://flagcdn.com/w320/kr.png" },
+            { name: "Spain", flag: "https://flagcdn.com/w320/es.png" },
+            { name: "United Kingdom", flag: "https://flagcdn.com/w320/gb.png" },
+            { name: "United States", flag: "https://flagcdn.com/w320/us.png" }
+        ];
+
+        let currentCountry;
+        let attempts;
+
+        function loadFlag() {
+            currentCountry = countries[Math.floor(Math.random() * countries.length)];
+            document.getElementById("flag").src = currentCountry.flag;
+            document.getElementById("guess").value = "";
+            document.getElementById("result").textContent = "";
+            attempts = 3;
+        }
+
+        function checkGuess() {
+            let userGuess = document.getElementById("guess").value.trim();
+            if (userGuess.toLowerCase() === currentCountry.name.toLowerCase()) {
+                document.getElementById("result").textContent = "Correct!";
+            } else {
+                attempts--;
+                if (attempts > 0) {
+                    document.getElementById("result").textContent = `Wrong! ${attempts} attempts left.`;
+                } else {
+                    document.getElementById("result").textContent = `Out of attempts! The correct answer was ${currentCountry.name}.`;
+                }
+            }
+        }
+
+        function nextFlag() {
+            loadFlag();
+        }
+
+        function exitGame() {
+            document.getElementById("flag-container").innerHTML = "<h2>Game Over</h2>";
+            document.getElementById("guess").style.display = "none";
+            document.querySelector("button").style.display = "none";
+        }
+
+        loadFlag();
+    </script>
+</body>
+</html>
